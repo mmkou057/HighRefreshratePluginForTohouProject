@@ -3,7 +3,7 @@
  *
  * 同时管理两个 DLL 代理插件（启用 = 放入游戏目录，停用 = 改名备份，
  * 不删除任何文件，可反复切换、随时还原）：
- *   高刷新率插件：d3d9.dll  + th15_hfr.ini （plugins\hfr\）
+ *   高刷新率插件：d3d9.dll + hfr.ini（plugins\hfr\）
  *   全向移动插件：dinput8.dll + padhook.ini（plugins\omni\）
  *
  * 插件载荷放在本程序同目录的 plugins\ 下；游戏目录记忆在
@@ -32,7 +32,7 @@ static wchar_t g_dir[MAX_PATH]   = L"";   /* 游戏目录 */
 static wchar_t g_edir[MAX_PATH]  = L"";   /* 注入器所在目录 */
 static HWND g_hdir, g_hst;
 
-static const wchar_t* HFR_FILES[] = { L"d3d9.dll", L"th15_hfr.ini" };
+static const wchar_t* HFR_FILES[] = { L"d3d9.dll", L"hfr.ini" };
 static const wchar_t* OM_FILES[]  = { L"dinput8.dll", L"padhook.ini" };
 #define BACKUP_SUFFIX L".hfr-off"
 
@@ -183,9 +183,9 @@ static void layout(HWND h) {
     CreateWindowW(L"BUTTON", L"浏览…", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                   428, y, 98, 24, h, (HMENU)(INT_PTR)IDC_BROWSE, NULL, NULL);
     y += 38;
-    CreateWindowW(L"BUTTON", L"启用高刷新率插件（d3d9.dll，支持 120/144/240/360/400Hz）",
+    CreateWindowW(L"BUTTON", L"启用高刷新率插件（d3d9.dll，120/144/240/360/400Hz；签名自动识别，不限 exe 版本）",
                   WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
-                  14, y, 480, 22, h, (HMENU)(INT_PTR)IDC_CHK_HFR, NULL, NULL);
+                  14, y, 512, 22, h, (HMENU)(INT_PTR)IDC_CHK_HFR, NULL, NULL);
     y += 30;
     CreateWindowW(L"BUTTON", L"启用全向移动插件（dinput8.dll，摇杆任意角度移动，帧率自适应）",
                   WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,

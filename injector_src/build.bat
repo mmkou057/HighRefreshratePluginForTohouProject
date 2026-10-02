@@ -1,10 +1,25 @@
 @echo off
-rem Build TH plugin injector (32-bit, pure Win32, no extra runtime deps)
+REM build.bat - build the combined plugin injector PluginSwitch.exe (WinForms, C# 5, x86)
 setlocal
-set GCC=..\..\mingw32\bin\i686-w64-mingw32-gcc.exe
-if not exist "%GCC%" set GCC=i686-w64-mingw32-gcc
-"%GCC%" -m32 -municode -mwindows -O2 -Wall -o TH_PluginInjector.exe injector.c ^
-  -lcomdlg32 -lshell32 -luser32 -lgdi32
-if errorlevel 1 (echo BUILD FAILED & exit /b 1)
-echo Build OK: TH_PluginInjector.exe
+set CSC=%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\csc.exe
+set ROOT=%~dp0
+
+if not exist "%CSC%" (
+  echo [ERR] csc not found: %CSC%
+  exit /b 1
+)
+
+echo ==^> Building PluginSwitch.exe (WinForms, C# 5, x86)
+"%CSC%" /nologo /platform:x86 /target:winexe /utf8output /codepage:65001 ^
+    /out:"%ROOT%PluginSwitch.exe" ^
+    /r:System.Windows.Forms.dll ^
+    /r:System.Drawing.dll ^
+    "%ROOT%src\PluginSwitch.cs"
+
+if errorlevel 1 (
+  echo [ERR] build failed
+  exit /b 1
+)
+
+echo ==^> Done. Run PluginSwitch.exe (must sit next to plugins\).
 endlocal
